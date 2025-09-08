@@ -28,20 +28,20 @@ export function App() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const games: CardInfo[] = [
-    {
-      title: 'Daily Word Guess',
-      color: '#00fff7',
-      img: '/images/daily-word.png',
-      component: <DailyWord />,
-      ref: cardRefs[0],
-    },
-    {
-      title: 'Daily Anagram',
-      color: '#ff00ff',
-      img: '/images/daily-anagram.png',
-      component: <DailyAnagram />,
-      ref: cardRefs[1],
-    },
+    // {
+    //   title: 'Daily Word Guess',
+    //   color: '#00fff7',
+    //   img: '/images/daily-word.png',
+    //   component: <DailyWord />,
+    //   ref: cardRefs[0],
+    // },
+    // {
+    //   title: 'Daily Anagram',
+    //   color: '#ff00ff',
+    //   img: '/images/daily-anagram.png',
+    //   component: <DailyAnagram />,
+    //   ref: cardRefs[1],
+    // },
     {
       title: 'Virtual Pet',
       color: '#ff0055',
@@ -49,20 +49,20 @@ export function App() {
       component: <VirtualPet />,
       ref: cardRefs[2],
     },
-    {
-      title: 'Wordle Clone',
-      color: '#00ff00',
-      component: <Wordle />,
-      img: '/images/virtual-pet.png',
-      ref: cardRefs[3],
-    },
-    {
-      title: 'Flip Coins',
-      color: '#ff9900',
-      component: <FlipCoins />,
-      img: '/images/virtual-pet.png',
-      ref: cardRefs[4],
-    },
+    // {
+    //   title: 'Wordle Clone',
+    //   color: '#00ff00',
+    //   component: <Wordle />,
+    //   img: '/images/virtual-pet.png',
+    //   ref: cardRefs[3],
+    // },
+    // {
+    //   title: 'Flip Coins',
+    //   color: '#ff9900',
+    //   component: <FlipCoins />,
+    //   img: '/images/virtual-pet.png',
+    //   ref: cardRefs[4],
+    // },
   ];
 
   // Cursor neon trails
@@ -168,7 +168,10 @@ export function App() {
           <section
             key={game.title}
             ref={game.ref}
-            className="card bg-[#1f1b2e]/80 backdrop-blur-md rounded-2xl p-6 shadow-lg border-2 relative overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_#fff] hover:animate-pulseBorder"
+            className={`card bg-[#1f1b2e]/80 backdrop-blur-md rounded-2xl shadow-lg border-2 relative overflow-hidden transition-all duration-300
+        hover:scale-105 hover:shadow-[0_0_60px_#fff] hover:animate-pulseBorder
+        ${game.title === 'Virtual Pet' ? 'col-span-3 md:col-span-3 h-[80vh] flex flex-col items-center justify-center p-6' : ''}
+      `}
             style={{ borderColor: game.color }}
             onMouseEnter={() => setHoveredCard(idx)}
             onMouseLeave={() => setHoveredCard(null)}
@@ -176,12 +179,20 @@ export function App() {
             <img
               src={game.img}
               alt={game.title}
-              className="absolute top-0 right-0 w-24 h-24 opacity-20 animate-float"
+              className="absolute top-0 right-0 w-32 h-32 opacity-20 animate-float"
             />
-            <h2 className="text-2xl font-bold mb-4 drop-shadow-neon" style={{ color: game.color }}>
+            <h2
+              className="text-3xl md:text-4xl font-bold mb-6 drop-shadow-neon"
+              style={{ color: game.color }}
+            >
               {game.title}
             </h2>
-            {game.component}
+
+            <div className="w-full h-full flex justify-center items-center">
+              <div className="w-full h-full max-w-4xl max-h-[70vh]  rounded-2xl p-6 flex flex-col items-center justify-between shadow-lg">
+                {game.component}
+              </div>
+            </div>
           </section>
         ))}
       </main>

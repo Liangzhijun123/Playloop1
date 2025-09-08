@@ -2,48 +2,62 @@ import React, { useEffect, useState } from "react";
 
 const STORAGE_KEY = "playloop:virtualpet";
 
+// --- Types ---
+type PetType = "Cat" | "Dog" | "Dragon" | "Fox";
+
+type PetDefinition = {
+  name: string;
+  type: PetType;
+  baseHappiness: number;
+  baseXP: number;
+  likedFoods: string[];
+  abilities: string[];
+  emoji: string; // new emoji field
+};
+
 type PetState = {
-  lastDate: string;
+  petDef: PetDefinition;
+  name: string;
   happiness: number;
-  fedTimes: number;
-  level: number;
   xp: number;
+  level: number;
 };
 
-const defaultPet: PetState = {
-  lastDate: new Date().toISOString().slice(0, 10),
-  happiness: 70,
-  fedTimes: 0,
-  level: 1,
-  xp: 0
+type Food = {
+  id: string;
+  name: string;
+  xp: number;
+  happiness: number;
 };
 
-function loadPet(): PetState {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return defaultPet;
-    const parsed = JSON.parse(raw) as PetState;
+// --- Sample Data ---
+const PETS: PetDefinition[] = [
+  { name: "Lantern", type: "Dog", baseHappiness: 70, baseXP: 0, likedFoods: ["Bone", "Meat"], abilities: ["Play Boost"], emoji: "🐶" },
+  { name: "Spark", type: "Cat", baseHappiness: 60, baseXP: 0, likedFoods: ["Fish", "Milk"], abilities: ["Nap Bonus"], emoji: "🐱" },
+  { name: "Blaze", type: "Dragon", baseHappiness: 80, baseXP: 0, likedFoods: ["Meat", "Fireberry"], abilities: ["XP Surge"], emoji: "🐉" },
+];
 
-    const today = new Date().toISOString().slice(0, 10);
-    if (parsed.lastDate !== today) {
-      parsed.lastDate = today;
-      parsed.fedTimes = 0;
-      parsed.happiness = Math.max(40, parsed.happiness - 8);
-      parsed.xp = Math.max(0, parsed.xp - 10);
-      if (parsed.xp === 0 && parsed.level > 1) parsed.level -= 1;
-    }
-    return parsed;
-  } catch {
-    return defaultPet;
-  }
+const INVENTORY: Food[] = [
+  { id: "f1", name: "Bone", xp: 10, happiness: 10 },
+  { id: "f2", name: "Fish", xp: 12, happiness: 8 },
+  { id: "f3", name: "Milk", xp: 8, happiness: 10 },
+  { id: "f4", name: "Meat", xp: 15, happiness: 12 },
+  { id: "f5", name: "Fireberry", xp: 20, happiness: 15 },
+];
+
+// --- Helper Functions ---
+function xpNeededForLevel(level: number) {
+  return 50 + level * 10;
 }
 
 function savePet(p: PetState) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
 }
 
-function xpNeededForLevel(level: number) {
-  return 50 + level * 10; // XP needed increases per level
+function loadPet(): PetState | null {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) return null;
+  return JSON.parse(raw) as PetState;
 }
 
 function getEmoji(happiness: number) {
@@ -52,117 +66,234 @@ function getEmoji(happiness: number) {
   return "☹️";
 }
 
-function getPetStage(level: number) {
-  if (level <= 10) return "🐾 Baby";
-  if (level <= 50) return "🐶 Teen";
-  return "🐕 Adult";
-}
-
+// --- Main Component ---
 export default function VirtualPet() {
-  const [pet, setPet] = useState<PetState>(loadPet());
+  const [pet, setPet] = useState<PetState | null>(loadPet());
+  const [selectedPet, setSelectedPet] = useState<PetDefinition | null>(null);
   const [msg, setMsg] = useState("");
+  const [inventory, setInventory] = useState(INVENTORY);
 
-  useEffect(() => savePet(pet), [pet]);
+  useEffect(() => {
+    if (pet) savePet(pet);
+  }, [pet]);
 
-  function feed() {
-    let newXP = pet.xp + 10; // XP per feed
+  // --- Actions ---
+  function feed(food: Food) {
+    if (!pet) return;
+    let xpGain = food.xp;
+    let happinessGain = food.happiness;
+
+    if (!pet.petDef.likedFoods.includes(food.name)) {
+      xpGain = -5;
+      happinessGain = -3;
+    }
+
+    let newXP = pet.xp + xpGain;
+    let newHappiness = Math.min(100, Math.max(0, pet.happiness + happinessGain));
+
     let newLevel = pet.level;
-
-    // ✅ Corrected Level-Up Logic: carry leftover XP
-    while (newXP >= xpNeededForLevel(newLevel) && newLevel < 100) {
+    while (newXP >= xpNeededForLevel(newLevel)) {
       newXP -= xpNeededForLevel(newLevel);
       newLevel++;
     }
 
-    const next = {
-      ...pet,
-      fedTimes: pet.fedTimes + 1, // still tracking, but not limiting
-      happiness: Math.min(100, pet.happiness + 10),
-      xp: newXP,
-      level: newLevel
-    };
-
-    setPet(next);
-    setMsg(`Yum! +10 XP, +10 happiness`);
+    setPet({ ...pet, xp: newXP, level: newLevel, happiness: newHappiness });
+    setMsg(`Fed ${food.name}: ${xpGain} XP, ${happinessGain} happiness`);
   }
 
   function play() {
-    const dec = Math.random() > 0.3 ? 8 : 5;
-    const next = { ...pet, happiness: Math.min(100, pet.happiness + dec) };
-    setPet(next);
-    setMsg("That was fun! +" + dec + " happiness");
+    if (!pet) return;
+    const gain = Math.random() > 0.3 ? 8 : 5;
+    setPet({ ...pet, happiness: Math.min(100, pet.happiness + gain) });
+    setMsg(`Played! +${gain} happiness`);
   }
 
-  function petNap() {
-    const next = { ...pet, happiness: Math.max(0, pet.happiness - 5) };
-    setPet(next);
-    setMsg("Pet took a nap — restful but quiet (-5 happiness)");
+  function rename(newName: string) {
+    if (!pet) return;
+    setPet({ ...pet, name: newName });
   }
 
+  function choosePet(p: PetDefinition) {
+    const initialPet: PetState = {
+      petDef: p,
+      name: p.name,
+      happiness: p.baseHappiness,
+      xp: p.baseXP,
+      level: 1,
+    };
+    setPet(initialPet);
+    setSelectedPet(p);
+    setMsg(`You adopted ${p.name}!`);
+  }
+
+  // --- Pet Selection Screen ---
+  if (!pet || !selectedPet) {
+    return (
+      <div style={{ padding: 24, textAlign: "center" }}>
+        <h2 style={{ fontSize: 32, marginBottom: 16 }}>Choose Your Pet</h2>
+        <div style={{ display: "flex", gap: 24, justifyContent: "center", flexWrap: "nowrap", overflowX: "auto", paddingBottom: 12 }}>
+          {PETS.map((p) => (
+            <div
+              key={p.name}
+              style={{
+                border: "3px solid #4caf50",
+                padding: 20,
+                borderRadius: 16,
+                width: 180,
+                background: "#f9f9f9",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+                flexShrink: 0,
+              }}
+            >
+              <div style={{ fontSize: 64 }}>{p.emoji}</div>
+              <div style={{ fontWeight: 700, marginTop: 8 }}>{p.name}</div>
+              <div style={{ fontStyle: "italic", color: "#555" }}>{p.type}</div>
+              <div style={{ marginTop: 8 }}>Abilities: {p.abilities.join(", ")}</div>
+              <button
+                style={{
+                  marginTop: 12,
+                  padding: "8px 16px",
+                  borderRadius: 8,
+                  border: "none",
+                  background: "#4caf50",
+                  color: "#fff",
+                  cursor: "pointer",
+                  fontWeight: "bold"
+                }}
+                onClick={() => choosePet(p)}
+              >
+                Adopt
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // --- Pet Dashboard ---
   const xpPercent = (pet.xp / xpNeededForLevel(pet.level)) * 100;
 
   return (
-    <div>
-      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+    <div style={{ padding: 24, maxWidth: 1050, margin: "0 auto", fontFamily: "Arial, sans-serif" }}>
+      <h2 style={{ fontSize: 32, textAlign: "center" }}>Your Pet</h2>
+      <div style={{ display: "flex", gap: 24, border: "#e0f7fa",borderWidth: 1, padding: 20, borderRadius: 16, boxShadow: "0 4px 12px rgba(0,0,0,0.2)", alignItems: "center" }}>
         <div
           style={{
-            width: 80,
-            height: 80,
-            borderRadius: 12,
-            background: "#052018",
+            width: 140,
+            height: 140,
+            borderRadius: 16,
+           
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            fontSize: 28
+            fontSize: 72,
+            color: "#fff",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.3)"
           }}
         >
-          {getEmoji(pet.happiness)}
+          {pet.petDef.emoji}
         </div>
-        <div>
-          <div style={{ fontWeight: 700 }}>Lantern</div>
-          <div className="small-muted">Happiness: {pet.happiness}%</div>
-          <div className="small-muted">Fed today: {pet.fedTimes}</div>
-          <div className="small-muted">Level: {pet.level}</div>
-          <div className="small-muted">{getPetStage(pet.level)}</div>
+        <div style={{ flex: 1 }}>
+          <div>
+            <strong>Name: </strong>
+            <input
+              value={pet.name}
+              onChange={(e) => rename(e.target.value)}
+              style={{
+                padding: "8px 12px",
+                borderRadius: 8,
+                border: "2px solid #4caf50",
+                fontSize: 20,
+                width: "100%"
+              }}
+            />
+          </div>
+          <div style={{ marginTop: 12, fontSize: 20 }}>Happiness: {pet.happiness}%</div>
+          <div style={{ marginTop: 8, fontSize: 20 }}>Level: {pet.level}</div>
         </div>
       </div>
 
-      {/* XP Progress Bar */}
-      <div style={{ marginTop: 12, width: "100%", background: "#eee", borderRadius: 8 }}>
+      {/* XP Bar */}
+      <div style={{ marginTop: 20, background: "#ccc", borderRadius: 12, height: 24, overflow: "hidden" }}>
         <div
           style={{
             width: `${xpPercent}%`,
-            height: 10,
-            background: "linear-gradient(90deg,#4caf50,#81c784)",
-            borderRadius: 8,
+            height: "100%",
+            background: "linear-gradient(90deg,#ffeb3b,#ffc107)",
             transition: "width 0.3s ease"
           }}
-        ></div>
+        />
       </div>
-      <small className="small-muted">
-        XP: {pet.xp} / {xpNeededForLevel(pet.level)}
-      </small>
+      <div style={{ textAlign: "center", marginTop: 4 }}>XP: {pet.xp} / {xpNeededForLevel(pet.level)}</div>
 
-      {/* Buttons */}
-      <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
-        <button className="button" onClick={feed}>
-          Feed 🍖
-        </button>
-        <button className="button" onClick={play}>
+      {/* Pet Abilities Panel */}
+      <h3 style={{ marginTop: 24, textAlign: "center", fontSize: 24 }}>Pet Abilities</h3>
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
+        {pet.petDef.abilities.map((ability) => (
+          <div
+            key={ability}
+            style={{
+              padding: "12px 20px",
+              borderRadius: 12,
+              border: "2px solid #3f51b5",
+              background: "#c5cae9",
+              fontWeight: "bold",
+              fontSize: 16,
+              boxShadow: "0 4px 8px rgba(0,0,0,0.2)"
+            }}
+          >
+            {ability}
+          </div>
+        ))}
+      </div>
+
+      {/* Inventory */}
+      <h3 style={{ marginTop: 24, textAlign: "center", fontSize: 24 }}>Inventory</h3>
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
+        {inventory.map((f) => (
+          <button
+            key={f.id}
+            onClick={() => feed(f)}
+            style={{
+              padding: "12px 20px",
+              borderRadius: 12,
+              border: "2px solid #ff9800",
+              background: "#ffe0b2",
+              cursor: "pointer",
+              fontWeight: "bold",
+              fontSize: 16,
+              minWidth: 100,
+              boxShadow: "0 4px 8px rgba(0,0,0,0.2)"
+            }}
+          >
+            {f.name}
+          </button>
+        ))}
+      </div>
+
+      {/* Actions */}
+      <div style={{ marginTop: 24, display: "flex", justifyContent: "center", gap: 16 }}>
+        <button
+          onClick={play}
+          style={{
+            padding: "12px 24px",
+            borderRadius: 12,
+            border: "none",
+            background: "#4caf50",
+            color: "#fff",
+            cursor: "pointer",
+            fontWeight: "bold",
+            fontSize: 18,
+            boxShadow: "0 4px 8px rgba(0,0,0,0.2)"
+          }}
+        >
           Play 🎾
         </button>
-        <button className="button secondary" onClick={petNap}>
-          Nap 😴
-        </button>
       </div>
 
-      <div className="status" style={{ marginTop: 8 }}>
-        {msg}
-      </div>
-
-      <div style={{ marginTop: 12 }}>
-        <small className="small-muted">Tip: pet care resets each day.</small>
-      </div>
+      {/* Status */}
+      <div style={{ marginTop: 16, textAlign: "center", fontSize: 18, minHeight: 24 }}>{msg}</div>
     </div>
   );
 }
