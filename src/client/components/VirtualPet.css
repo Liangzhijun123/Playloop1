@@ -1,0 +1,80 @@
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.cards, .story-card {
+  min-height: 300px;
+}
+
+.card {
+  background: rgba(31, 27, 46, 0.8);
+  border: 2px solid #0ff;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 0 20px #0ff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 60px #fff;
+}
+
+.dashboard-header {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+.title {
+  font-size: 3rem;
+  background: linear-gradient(90deg, #00fff7, #ff00ff, #ff0055);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: pulseText 2s infinite;
+}
+.subtitle {
+  color: #9f9f9f;
+  margin-top: 0.5rem;
+}
+
+.actions, .feed-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  border: 2px solid #0ff;
+  border-radius: 10px;
+  background: black;
+  color: #0ff;
+  cursor: pointer;
+  box-shadow: 0 0 12px #0ff;
+  transition: all 0.2s ease;
+}
+button:hover {
+  background: #0ff;
+  color: black;
+  box-shadow: 0 0 25px #0ff;
+}
+
+.stats {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.dashboard-footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  border-top: 1px solid #333;
+  color: #888;
+}
+
+@keyframes pulseText {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}

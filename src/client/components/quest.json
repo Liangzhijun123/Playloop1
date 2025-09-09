@@ -1,0 +1,39 @@
+{
+  "questId": "forest_hunt_001",
+  "title": "The Magical Forest",
+  "nodes": [
+    {
+      "id": 1,
+      "text": "You enter a forest filled with glowing mushrooms and strange whispers. 🌲",
+      "choices": [
+        { "text": "Follow the whispers", "next": 2, "effect": { "xp": 10 } },
+        { "text": "Ignore and explore deeper", "next": 3, "effect": { "health": -5 } }
+      ]
+    },
+    {
+      "id": 2,
+      "text": "A hidden treasure chest lies behind a tree stump! 🎁",
+      "treasure": "Golden Acorn",
+      "choices": [
+        { "text": "Take it", "next": 4, "effect": { "happiness": 10 } },
+        { "text": "Leave it", "next": 4, "effect": {} }
+      ]
+    },
+    {
+      "id": 3,
+      "text": "A wild monster jumps out! 🐉",
+      "monster": "Forest Dragon",
+      "choices": [
+        { "text": "Fight", "next": 4, "effect": { "health": -20, "xp": 15 } },
+        { "text": "Run away", "next": 4, "effect": { "health": -5 } }
+      ]
+    },
+    {
+      "id": 4,
+      "text": "You see the forest exit and the sun peeking through the trees. 🌞",
+      "choices": [
+        { "text": "Exit forest", "next": null, "effect": { "xp": 5, "happiness": 5 } }
+      ]
+    }
+  ]
+}
