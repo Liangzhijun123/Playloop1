@@ -65,11 +65,7 @@ export default function App() {
         />
       ))}
 
-      {/* Header */}
-      <header className="dashboard-header">
-        <h1 className="title">Playloop — Daily Games</h1>
-        <p className="subtitle">Word games, puzzles, pets — fresh content every day.</p>
-      </header>
+    
 
       {/* Main Content */}
       <main className="cards">

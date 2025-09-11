@@ -1,68 +1,54 @@
 import React, { useState } from 'react';
-import StoryPlayer from './StoryPlayer';
 import './VirtualPet.css';
 
 export default function VirtualPetDashboard() {
-  const [pet, setPet] = useState({
-    name: 'Spark',
-    level: 1,
-    happiness: 60,
-    xp: 0,
-    xpNeeded: 60,
-  });
+  const [selectedPet, setSelectedPet] = useState<string | null>(null);
+  const [petName, setPetName] = useState<string>('');
 
-  const feedOptions = ['BONE', 'FISH', 'MILK', 'MEAT', 'FIREBERRY'];
+  const handleConfirmName = () => {
+    if (petName.trim() !== '') {
+      alert(`Your ${selectedPet} is named ${petName}!`);
+      // Proceed to next screen or logic
+    }
+  };
 
+  if (selectedPet) {
+    // Pet naming screen
+    return (
+      <div className='background'>
+        <p className='titles'>Welcome to virtual pet game!</p>
+        <p style={{ color: 'white' }}>Name your {selectedPet}</p>
+        <input
+          type='text'
+          placeholder='Enter pet name...'
+          value={petName}
+          onChange={(e) => setPetName(e.target.value)}
+        />
+        <button className='button-choose' onClick={handleConfirmName}>
+          Confirm
+        </button>
+      </div>
+    );
+  }
+
+  // Pet selection screen
   return (
-    <div>
-      <div className="dashboard-header">
-        <h1 className="title">Virtual Pet World</h1>
-    
-      </div>
+    <div className='background'>
+      <p className='titles'>Welcome to virtual pet game!</p>
+      <p style={{ color: 'white' }}>Choose a pet</p>
 
-      <div className="dashboard-grid">
-        {/* Pet Stats */}
-        <div className="card neon-card">
-          <h2>{pet.name} 🐾</h2>
-          <p>Level: {pet.level}</p>
-          <p>Happiness: {pet.happiness}</p>
-          <p>XP: {pet.xp}/{pet.xpNeeded}</p>
-          <div className="feed-buttons">
-            {feedOptions.map((food, i) => (
-              <button key={i} onClick={() => setPet({...pet, xp: pet.xp + 5, happiness: pet.happiness + 3})}>
-                Feed {food}
-              </button>
-            ))}
+      <div className='choose-pet'>
+        {[1, 2, 3, 4].map((_, index) => (
+          <div
+            key={index}
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}
+          >
+            <img src='/egg.png' style={{ width: '76px', height: '94px' }} />
+            <button className='button-choose' onClick={() => setSelectedPet(`Pet ${index + 1}`)}>
+              Choose
+            </button>
           </div>
-        </div>
-
-        {/* Quest / Story */}
-        <StoryPlayer />
-
-        {/* Achievements */}
-        <div className="card neon-card">
-          <h2>Achievements 🏅</h2>
-          <ul>
-            <li>First Feed 🥇</li>
-            <li>Level Up 🥈</li>
-            <li>Daily Adventure Complete 🥉</li>
-          </ul>
-        </div>
-
-        {/* Leaderboard */}
-        <div className="card neon-card">
-          <h2>Leaderboard 🏆</h2>
-          <ol>
-            <li>User123 — Level 10</li>
-            <li>NeonFox — Level 8</li>
-            <li>Spark 🐾 — Level 5</li>
-          </ol>
-          <button>View Full Board</button>
-        </div>
-      </div>
-
-      <div className="dashboard-footer">
-        © 2025 Virtual Pet World
+        ))}
       </div>
     </div>
   );
