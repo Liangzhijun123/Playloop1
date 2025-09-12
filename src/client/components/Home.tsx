@@ -1,41 +1,69 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './VirtualPet.css';
+import Shop from './Shop';
 
 interface HomeProps {
   petName: string;
   petType: string;
 }
 
+type ActiveView = 'home' | 'shop' | 'story' | 'chat';
+
 export default function Home({ petName, petType }: HomeProps) {
-  return (
-    <>
-      <div style={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
-        <div className="profile">
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: '200px',
-              justifyContent: 'space-between',
-            }}
-          >
+  const [activeView, setActiveView] = useState<ActiveView>('home');
+
+  // Render different views based on activeView
+  const renderContent = () => {
+    switch (activeView) {
+      case 'shop':
+        return <Shop />;
+      case 'story':
+        return <div style={{ color: 'white', padding: '20px' }}>Story content coming soon...</div>;
+      case 'chat':
+        return <div style={{ color: 'white', padding: '20px' }}>Chat content coming soon...</div>;
+      default:
+        return (
+          <>
             <div
-              style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginTop: '32px',
+              }}
             >
-              <p>{petName}</p>
-              <p>Lv: 14</p>
+              <div>
+                <p style={{ color: 'white' }}>Health bar</p>
+              </div>
             </div>
-            <div
-              style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}
-            >
+          </>
+        );
+    }
+  };
+
+  return (
+    <div className="home-container">
+      <div style={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
+        <div className="flex w-full flex-col mx-10 my-5 gap-4 profile p-2">
+          <div className="px-2 flex w-full justify-between">
+            <div className=" flex w-auto gap-2">
+              <p>{petName}</p>
+              <p className="text-nowrap">Lv: 14</p>
+            </div>
+            <div className=" flex w-auto gap-2">
               <img src="/cash.png" style={{ width: '24px', height: '18px' }} />
               <p>$1000</p>
             </div>
           </div>
 
           <div
-            style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '100px' }}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}
           >
             <div
               style={{
@@ -112,6 +140,6 @@ export default function Home({ petName, petType }: HomeProps) {
       <div style={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
         <button></button>
       </div>
-    </>
+    </div>
   );
 }

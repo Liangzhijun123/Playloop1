@@ -79,10 +79,10 @@ export default function App() {
 
       </main>
 
-      {/* Footer */}
+      {/* Footer
       <footer className="dashboard-footer">
         <small>Built for Hackathon — swap localStorage for Devvit KV when ready.</small>
-      </footer>
+      </footer> */}
     </div>
   );
 }
