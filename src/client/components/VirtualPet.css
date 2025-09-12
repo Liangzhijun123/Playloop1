@@ -6,18 +6,18 @@ p {
   font-family: 'Itim';
 }
 
-.background{
-  background-color: #100C29;
+.background {
+  background-color: #100c29;
   align-items: center;
   display: flex;
   justify-content: center;
   flex-direction: column;
-  gap: 32px
+  gap: 32px;
 }
 
 .titles {
   font-size: 48px;
-  background: linear-gradient(90deg, #8A48D1, #CF0CD1);
+  background: linear-gradient(90deg, #8a48d1, #cf0cd1);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -26,7 +26,7 @@ p {
   width: 335px;
 }
 
-.choose-pet{
+.choose-pet {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
@@ -37,11 +37,11 @@ p {
 .button-choose {
   border-width: 1px;
   border-style: solid;
-  border-color: #FFFFFF;
+  border-color: #ffffff;
   border-radius: 10px;
   text-align: center;
   padding-left: 20px;
-  padding-right: 20px;  
+  padding-right: 20px;
   padding-top: 10px;
   padding-bottom: 10px;
   background-color: transparent;
@@ -52,11 +52,25 @@ p {
 .input-name {
   border-bottom-width: 1px;
   border-bottom-style: solid;
-  border-bottom-color: #FFFFFF;
+  border-bottom-color: #ffffff;
   background-color: transparent;
   color: white;
   padding-bottom: 10px;
-  border: none;
-  outline: none;
-  font-size: 16px;
+}
+
+/* home */
+.profile {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #ffffff;
+  border-radius: 10px;
+  width: 357px;
+  height: 72px;
+  background-color: linear-gradient(180deg, #d987f29a, #ef65ca70);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px
+
 }

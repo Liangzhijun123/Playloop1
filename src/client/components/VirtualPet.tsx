@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import './VirtualPet.css';
+import Home from './Home';
 
 export default function VirtualPetDashboard() {
-  const [selectedPet, setSelectedPet] = useState<string | null>(null);
+   const [selectedPet, setSelectedPet] = useState<string | null>(null);
   const [petName, setPetName] = useState<string>('');
+  const [showHome, setShowHome] = useState<boolean>(false);
 
   const handleConfirmName = () => {
     if (petName.trim() !== '') {
-      alert(`Your ${selectedPet} is named ${petName}!`);
-      // Proceed to next screen or logic
+      setShowHome(true); // Switch to home screen
     }
   };
+
+  if (showHome) {
+    return <Home petName={petName} petType={selectedPet || 'Pet'} />;
+  }
 
   if (selectedPet) {
     // Pet naming screen
@@ -23,6 +28,7 @@ export default function VirtualPetDashboard() {
           placeholder='Enter pet name...'
           value={petName}
           onChange={(e) => setPetName(e.target.value)}
+          className='input-name'
         />
         <button className='button-choose' onClick={handleConfirmName}>
           Confirm

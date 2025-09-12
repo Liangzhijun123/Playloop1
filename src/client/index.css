@@ -13,6 +13,12 @@ body, html {
   overflow-x: hidden;
 }
 
+p {
+  padding: 0;
+  margin: 0;
+  font-family: 'Itim';
+}
+
 /* Grid Background */
 .grid-bg {
   position: fixed;
@@ -85,6 +91,15 @@ body, html {
   margin-top: 0.5rem;
 }
 
+
+.background{
+  background-color: #100C29;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 32px
+}
 
 
 /* Footer */
