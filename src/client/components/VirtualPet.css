@@ -74,3 +74,25 @@ p {
   gap: 16px
 
 }
+
+.home-bar{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid #77E7F0;
+  border-radius: 10px;
+  border-width: 1px;
+  background-color: #1C182D;
+  justify-content: center;
+
+}
+
+.pet-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+ 
+}
