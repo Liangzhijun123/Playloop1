@@ -1,14 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './VirtualPet.css';
+import Shop from './Shop';
 
 interface HomeProps {
   petName: string;
   petType: string;
 }
 
+type ActiveView = 'home' | 'shop' | 'story' | 'chat';
+
 export default function Home({ petName, petType }: HomeProps) {
+  const [activeView, setActiveView] = useState<ActiveView>('home');
+
+  // Render different views based on activeView
+  const renderContent = () => {
+    switch (activeView) {
+      case 'shop':
+        return <Shop/>;
+      case 'story':
+        return <div style={{ color: 'white', padding: '20px' }}>Story content coming soon...</div>;
+      case 'chat':
+        return <div style={{ color: 'white', padding: '20px' }}>Chat content coming soon...</div>;
+      default:
+        return (
+          <>
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: '32px' }}>
+              <div>
+                <p style={{ color: 'white' }}>Health bar</p>
+              </div>
+            </div>
+          </>
+        );
+    }
+  };
+
   return (
-    <>
+    <div className="home-container">
       <div style={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
         <div className="profile">
           <div
@@ -43,12 +70,42 @@ export default function Home({ petName, petType }: HomeProps) {
         </div>
       </div>
     
-    <div style={{width: '357px', height: 'auto', display: 'flex', justifyContent: 'center', alignContent: 'center'}}></div>
-      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: '32px' }}>
-        <div>
-            <p style={{color: 'white'}}>Health bar</p>
+      <div style={{ width: '357px', height: 'auto', display: 'flex', justifyContent: 'center', alignContent: 'center' }}></div>
+      
+      {/* Render content based on active view */}
+      {renderContent()}
+
+      {/* Navigation Bar */}
+      <nav className="bottom-nav">
+        <div 
+          className={`nav-item ${activeView === 'home' ? 'active' : ''}`}
+          onClick={() => setActiveView('home')}
+        >
+          <img src="/home.png" alt="Home" className="nav-icon" />
+          <span>Home</span>
         </div>
-      </div>
-    </>
+        <div 
+          className={`nav-item ${activeView === 'shop' ? 'active' : ''}`}
+          onClick={() => setActiveView('shop')}
+        >
+          <img src="/shop.png" alt="Shop" className="nav-icon" />
+          <span>Shop</span>
+        </div>
+        <div 
+          className={`nav-item ${activeView === 'story' ? 'active' : ''}`}
+          onClick={() => setActiveView('story')}
+        >
+          <img src="/story.png" alt="Story" className="nav-icon" />
+          <span>Story</span>
+        </div>
+        <div 
+          className={`nav-item ${activeView === 'chat' ? 'active' : ''}`}
+          onClick={() => setActiveView('chat')}
+        >
+          <img src="/chat.png" alt="Chat" className="nav-icon" />
+          <span>Chat</span>
+        </div>
+      </nav>
+    </div>
   );
 }
