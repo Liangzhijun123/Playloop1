@@ -43,6 +43,7 @@ export default function VirtualPetDashboard() {
       <p className='titles'>Welcome to virtual pet game!</p>
       <p style={{ color: 'white' }}>Choose a pet</p>
 
+
       <div className='choose-pet'>
         {[1, 2, 3, 4].map((_, index) => (
           <div

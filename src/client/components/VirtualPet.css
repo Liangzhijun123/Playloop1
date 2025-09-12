@@ -51,14 +51,18 @@ p {
 }
 
 .input-name {
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: #ffffff;
-  background-color: transparent;
+  background: transparent;
   color: white;
-  padding-bottom: 10px;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid white;
+  padding: 10px;
 }
-
+.input-name::placeholder {
+  color: gray;
+  size: 16px;
+  font-weight: 600;
+}
 /* home */
 .profile {
   border-width: 1px;
