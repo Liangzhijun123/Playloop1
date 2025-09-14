@@ -30,19 +30,13 @@ export default function Home({ petName, petType }: HomeProps) {
       <div style={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
         <div className="profile">
           <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: '200px',
-              justifyContent: 'space-between',
-            }}
+           className='flex justify-between items-stretch w-full px-4'
           >
             <div
               style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}
             >
-              <p>{petName}</p>
-              <p>Lv: 14</p>
+              <div className='px-2'>{petName}</div>
+              <div className='text-nowrap'>Lv: 14</div>
             </div>
             <div
               style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}

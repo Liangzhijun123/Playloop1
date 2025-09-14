@@ -11,7 +11,8 @@ type Trail = {
 
 export default function App() {
   const [trails, setTrails] = useState<Trail[]>([]);
-
+  const setActiveView = (x) => {}
+  const activeView = 'home';
   // Generate neon particles
   const [particles, setParticles] = useState<{ top: number; left: number; color: string; delay: number }[]>([]);
 
@@ -38,7 +39,7 @@ export default function App() {
   };
 
   return (
-    <div className="dashboard" onMouseMove={handleMouseMove}>
+    <div className="flex flex-col items-center justify-center h-full">
       {/* Grid Background */}
       <div className="grid-bg" />
 
@@ -56,21 +57,11 @@ export default function App() {
         />
       ))}
 
-      {/* Cursor Trails */}
-      {trails.map((trail) => (
-        <div
-          key={trail.id}
-          className="cursor-trail"
-          style={{ top: trail.y, left: trail.x, backgroundColor: trail.color }}
-        />
-      ))}
-
-    
 
       {/* Main Content */}
-      <main className="cards">
+      <main className="cards flex flex-col items-center justify-center h-full">
         {/* Virtual Pet */}
-        <section className="">
+        <section className="flex flex-col h-full">
         
           <div className="">
             <VirtualPet />
@@ -79,10 +70,36 @@ export default function App() {
 
       </main>
 
-     
-      <footer className="dashboard-footer">
-        <small>Built for Hackathon — swap localStorage for Devvit KV when ready.</small>
-      </footer>
+ <nav className="bottom-nav">
+        <div 
+          className={`nav-item ${activeView === 'home' ? 'active' : ''}`}
+          onClick={() => setActiveView('home')}
+        >
+          <img src="/home.png" alt="Home" className="nav-icon" />
+          <span>Home</span>
+        </div>
+        <div 
+          className={`nav-item ${activeView === 'shop' ? 'active' : ''}`}
+          onClick={() => setActiveView('shop')}
+        >
+          <img src="/shop.png" alt="Shop" className="nav-icon" />
+          <span>Shop</span>
+        </div>
+        <div 
+          className={`nav-item ${activeView === 'story' ? 'active' : ''}`}
+          onClick={() => setActiveView('story')}
+        >
+          <img src="/story.png" alt="Story" className="nav-icon" />
+          <span>Story</span>
+        </div>
+        <div 
+          className={`nav-item ${activeView === 'chat' ? 'active' : ''}`}
+          onClick={() => setActiveView('chat')}
+        >
+          <img src="/chat.png" alt="Chat" className="nav-icon" />
+          <span>Chat</span>
+        </div>
+      </nav>
     </div>
   );
 }

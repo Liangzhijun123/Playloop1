@@ -12,11 +12,6 @@
     overflow-x: hidden;
   }
 }
-p {
-  padding: 0;
-  margin: 0;
-  font-family: 'Itim';
-}
 
 /* Grid Background */
 .grid-bg {

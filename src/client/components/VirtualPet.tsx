@@ -1,61 +1,25 @@
 import React, { useState } from 'react';
 import './VirtualPet.css';
 import Home from './Home';
+import PetSelection from './PetSelection';
 
 export default function VirtualPetDashboard() {
-   const [selectedPet, setSelectedPet] = useState<string | null>(null);
+   
   const [petName, setPetName] = useState<string>('');
-  const [showHome, setShowHome] = useState<boolean>(false);
+  const [Stage, setStage] = useState("home")
 
-  const handleConfirmName = () => {
-    if (petName.trim() !== '') {
-      setShowHome(true); // Switch to home screen
-    }
+  const handleConfirmName = (petname:string) => {
+   setStage("Home");
+    setPetName(petname);
   };
 
-  if (showHome) {
-    return <Home petName={petName} petType={selectedPet || 'Pet'} />;
+  if (Stage === "Home") {
+    return <Home petName={petName} petType={ 'Pet'} />;
   }
+  
 
-  if (selectedPet) {
-    // Pet naming screen
-    return (
-      <div className='background'>
-        <p className='titles'>Welcome to virtual pet game!</p>
-        <p style={{ color: 'white' }}>Name your {selectedPet}</p>
-        <input
-          type='text'
-          placeholder='Enter pet name...'
-          value={petName}
-          onChange={(e) => setPetName(e.target.value)}
-          className='input-name'
-        />
-        <button className='button-choose' onClick={handleConfirmName}>
-          Confirm
-        </button>
-      </div>
-    );
+
+return(
+  <><PetSelection  handleConfirmName={handleConfirmName} /></>
+)
   }
-
-  // Pet selection screen
-  return (
-    <div className='background'>
-      <p className='titles'>Welcome to virtual pet game!</p>
-      <p style={{ color: 'white' }}>Choose a pet</p>
-
-      <div className='choose-pet'>
-        {[1, 2, 3, 4].map((_, index) => (
-          <div
-            key={index}
-            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}
-          >
-            <img src='/egg.png' style={{ width: '76px', height: '94px' }} />
-            <button className='button-choose' onClick={() => setSelectedPet(`Pet ${index + 1}`)}>
-              Choose
-            </button>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
