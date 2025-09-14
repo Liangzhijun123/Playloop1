@@ -11,12 +11,15 @@ export default function Home({ petName, petType }: HomeProps) {
   // Track active state for each feed button
   const [activeFeedIndex, setActiveFeedIndex] = React.useState<number | null>(null);
 
+  const [showStats, setShowStats] = React.useState(false);
+
   const handleHungerClick = () => {
     setShowHungerModal(true);
   };
 
   const closeModal = () => {
     setShowHungerModal(false);
+    setShowStats(false);
   };
   const handleFeedClick = (idx: number) => {
     setActiveFeedIndex(idx);
@@ -109,7 +112,7 @@ export default function Home({ petName, petType }: HomeProps) {
         {' '}
         <div className="pet-image">
           <img src="/cat.png" style={{ width: '221px', height: '241px' }} />
-          <button>
+          <button className="info-button" onClick={() => setShowStats(true)}>
             <img
               src="/info.png"
               style={{
@@ -152,7 +155,12 @@ export default function Home({ petName, petType }: HomeProps) {
           <div className="modal-overlay">
             <div className="modal-content">
               <div
-                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingBottom: '20px',
+                }}
               >
                 <p style={{ color: 'black' }}>Food Inventory</p>
                 <button onClick={closeModal} className="cancel-button">
@@ -170,7 +178,7 @@ export default function Home({ petName, petType }: HomeProps) {
                       gap: '16px',
                     }}
                   >
-                    <img src="/burger.png" className='burger'></img>
+                    <img src="/burger.png" className="burger"></img>
                     <button
                       className={`feed-button${activeFeedIndex === idx ? ' active' : ''}`}
                       onClick={() => handleFeedClick(idx)}
@@ -179,6 +187,137 @@ export default function Home({ petName, petType }: HomeProps) {
                     </button>
                   </div>
                 ))}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {showStats && (
+        <>
+          <div className="modal-overlay">
+            <div className="modal-content">
+              {' '}
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingBottom: '20px',
+                }}
+              >
+                <p style={{ color: 'black' }}>Pet Stats</p>
+                <button onClick={closeModal} className="cancel-button">
+                  <img src="/cancel.png" style={{ width: '9px', height: '8px' }} />
+                </button>
+              </div>
+              <p style={{ color: 'black', paddingBottom: '10px' }}>Stats</p>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '16px',
+                  paddingBottom: '24px',
+                }}
+              >
+                <div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <p style={{ color: 'black' }}>Health</p>
+                    <p style={{ color: 'black' }}>100%</p>
+                  </div>
+                  <div>
+                    <div className="bar"></div>
+                  </div>
+                </div>
+                <div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <p style={{ color: 'black' }}>Happiness</p>
+                    <p style={{ color: 'black' }}>100%</p>
+                  </div>
+                  <div>
+                    <div className="bar"></div>
+                  </div>
+                </div>
+                <div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <p style={{ color: 'black' }}>Hunger</p>
+                    <p style={{ color: 'black' }}>100%</p>
+                  </div>
+                  <div>
+                    <div className="bar"></div>
+                  </div>
+                </div>
+              </div>
+              <p style={{ color: 'black', paddingBottom: '10px' }}>Skills</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <div className="skill-container">
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignContent: 'center',
+                      gap: '150px',
+                    }}
+                  >
+                    <p style={{ color: '#631C1C' }}>Claw Swap</p>
+                    <div
+                      style={{
+                        backgroundColor: '#E264A6',
+                        paddingLeft: '10px',
+                        paddingRight: '10px',
+                        paddingTop: '5px',
+                        paddingBottom: '5px',
+                        borderRadius: '10px',
+                      }}
+                    >
+                      <p>Dmg: 15</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="skill-container">
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignContent: 'center',
+                      gap: '150px',
+                    }}
+                  >
+                    <p style={{ color: '#631C1C' }}>Claw Swap</p>
+                    <div
+                      style={{
+                        backgroundColor: '#E264A6',
+                        paddingLeft: '10px',
+                        paddingRight: '10px',
+                        paddingTop: '5px',
+                        paddingBottom: '5px',
+                        borderRadius: '10px',
+                      }}
+                    >
+                      <p>Dmg: 15</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
