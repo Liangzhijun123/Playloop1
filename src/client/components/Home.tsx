@@ -1,29 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './VirtualPet.css';
+import Shop from './Shop';
 
 interface HomeProps {
   petName: string;
   petType: string;
 }
 
+type ActiveView = 'home' | 'shop' | 'story' | 'chat';
+
 export default function Home({ petName, petType }: HomeProps) {
-  const [showHungerModal, setShowHungerModal] = React.useState(false);
-  // Track active state for each feed button
-  const [activeFeedIndex, setActiveFeedIndex] = React.useState<number | null>(null);
+  const [activeView, setActiveView] = useState<ActiveView>('home');
 
-  const handleHungerClick = () => {
-    setShowHungerModal(true);
-  };
-
-  const closeModal = () => {
-    setShowHungerModal(false);
-  };
-  const handleFeedClick = (idx: number) => {
-    setActiveFeedIndex(idx);
+  // Render different views based on activeView
+  const renderContent = () => {
+    switch (activeView) {
+      case 'shop':
+        return <Shop/>;
+      case 'story':
+        return <div style={{ color: 'white', padding: '20px' }}>Story content coming soon...</div>;
+      case 'chat':
+        return <div style={{ color: 'white', padding: '20px' }}>Chat content coming soon...</div>;
+      default:
+        return (
+          <>
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: '32px' }}>
+              <div>
+                <p style={{ color: 'white' }}>Health bar</p>
+              </div>
+            </div>
+          </>
+        );
+    }
   };
 
   return (
-    <>
+    <div className="home-container">
       <div style={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
         <div className="profile">
           <div
@@ -64,126 +76,43 @@ export default function Home({ petName, petType }: HomeProps) {
           </div>
         </div>
       </div>
+    
+      <div style={{ width: '357px', height: 'auto', display: 'flex', justifyContent: 'center', alignContent: 'center' }}></div>
+      
+      {/* Render content based on active view */}
+      {renderContent()}
 
-      <div
-        style={{
-          width: '357px',
-          height: 'auto',
-          display: 'flex',
-          justifyContent: 'center',
-          alignContent: 'center',
-        }}
-      ></div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginTop: '32px',
-          gap: '32px',
-        }}
-      >
-        <div className="home-bar">
-          <img src="/heart.png" style={{ width: '32px', height: '37px' }} />
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'left', gap: '4px' }}>
-            <p style={{ color: 'white' }}>Health bar</p>
-            <div
-              style={{
-                width: '104px',
-                height: '2px',
-                border: '5px solid #CB911B',
-                borderRadius: '10px',
-              }}
-            ></div>
-          </div>
+      {/* Navigation Bar */}
+      <nav className="bottom-nav">
+        <div 
+          className={`nav-item ${activeView === 'home' ? 'active' : ''}`}
+          onClick={() => setActiveView('home')}
+        >
+          <img src="/home.png" alt="Home" className="nav-icon" />
+          <span>Home</span>
         </div>
-        <div className="home-bar">
-          <img src="/achievement.png" style={{ width: '20px', height: '20px' }} />
-
-          <p style={{ color: 'white' }}>Achievements</p>
+        <div 
+          className={`nav-item ${activeView === 'shop' ? 'active' : ''}`}
+          onClick={() => setActiveView('shop')}
+        >
+          <img src="/shop.png" alt="Shop" className="nav-icon" />
+          <span>Shop</span>
         </div>
-      </div>
-
-      <div style={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
-        {' '}
-        <div className="pet-image">
-          <img src="/cat.png" style={{ width: '221px', height: '241px' }} />
-          <button>
-            <img
-              src="/info.png"
-              style={{
-                width: '35px',
-                height: '34px',
-                position: 'absolute',
-                top: '0px',
-                right: '10px',
-              }}
-            />
-          </button>
+        <div 
+          className={`nav-item ${activeView === 'story' ? 'active' : ''}`}
+          onClick={() => setActiveView('story')}
+        >
+          <img src="/story.png" alt="Story" className="nav-icon" />
+          <span>Story</span>
         </div>
-      </div>
-
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignContent: 'center',
-          gap: '16px',
-        }}
-      >
-        <button className="smile-button">
-          <img src="/smile.png" style={{ width: '41px', height: '50px' }} />
-        </button>
-        <button className="smile-button" onClick={handleHungerClick}>
-          <img src="/hunger.png" style={{ width: '41px', height: '50px' }} />
-        </button>
-        <button className="smile-button">
-          <img src="/night.png" style={{ width: '41px', height: '50px' }} />
-        </button>
-        <button className="smile-button">
-          <img src="/shower.png" style={{ width: '41px', height: '50px' }} />
-        </button>
-      </div>
-
-      {showHungerModal && (
-        <>
-          <div className="modal-overlay">
-            <div className="modal-content">
-              <div
-                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
-              >
-                <p style={{ color: 'black' }}>Food Inventory</p>
-                <button onClick={closeModal} className="cancel-button">
-                  <img src="/cancel.png" style={{ width: '9px', height: '8px' }} />
-                </button>
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'auto auto auto', gap: '15px' }}>
-                {[...Array(6)].map((_, idx) => (
-                  <div
-                    key={idx}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      gap: '16px',
-                    }}
-                  >
-                    <img src="/burger.png" className='burger'></img>
-                    <button
-                      className={`feed-button${activeFeedIndex === idx ? ' active' : ''}`}
-                      onClick={() => handleFeedClick(idx)}
-                    >
-                      Feed
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </>
-      )}
-    </>
+        <div 
+          className={`nav-item ${activeView === 'chat' ? 'active' : ''}`}
+          onClick={() => setActiveView('chat')}
+        >
+          <img src="/chat.png" alt="Chat" className="nav-icon" />
+          <span>Chat</span>
+        </div>
+      </nav>
+    </div>
   );
 }
