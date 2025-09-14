@@ -66,7 +66,7 @@ p {
   border-radius: 10px;
   width: 357px;
   height: 72px;
-  background-color: linear-gradient(180deg, #d987f29a, #ef65ca70);
+  background: linear-gradient(180deg, #d987f29a, #ef65ca70);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -130,16 +130,14 @@ p {
 }
 
 .cancel-button {
-
-  
   background: transparent;
   border: none;
   cursor: pointer;
   border: none;
 }
 
-.feed-button{
-  background-color: #D5D5D5;
+.feed-button {
+  background-color: #d5d5d5;
   border-color: transparent;
   border: none;
   padding-left: 30px;
@@ -147,16 +145,16 @@ p {
   padding-top: 5px;
   padding-bottom: 5px;
   border-radius: 5px;
-  color: #7F7F7F;
+  color: #7f7f7f;
   font-weight: 400;
 }
 
-.feed-button.active{
-  background-color: #47DB30;
+.feed-button.active {
+  background-color: #47db30;
   color: white;
 }
 
-.burger{
+.burger {
   width: 60px;
   height: 60px;
   cursor: pointer;
@@ -210,4 +208,26 @@ p {
   width: 24px;
   height: 24px;
   object-fit: contain;
+}
+.info-button {
+  cursor: pointer;
+}
+
+.bar {
+  width: auto;
+  height: 10px;
+  left: 15px;
+  top: 104px;
+  background-color: #ea2929;
+  border-radius: 20px;
+}
+
+.skill-container{
+  background-color: #FEDCEE;
+  width: auto;
+  height: 42px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
