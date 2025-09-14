@@ -22,7 +22,9 @@
     "launch": "npm run build && npm run deploy && devvit publish",
     "prettier": "prettier-package-json --write ./package.json && prettier --write .",
     "type-check": "tsc --build",
+  
     "dev:local": "vite --host"
+ 
   },
   "dependencies": {
     "@devvit/web": "0.12.0",
@@ -51,7 +53,7 @@
     "prettier": "3.5.3",
     "prettier-package-json": "2.8.0",
     "prettier-plugin-tailwindcss": "0.6.11",
-    "tailwindcss": "^4.1.13",
+    "tailwindcss": "^4.1.12",
     "typescript": "5.8.2",
     "typescript-eslint": "8.29.0",
     "vite": "6.2.4",

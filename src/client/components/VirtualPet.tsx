@@ -3,7 +3,7 @@ import './VirtualPet.css';
 import Home from './Home';
 
 export default function VirtualPetDashboard() {
-  const [selectedPet, setSelectedPet] = useState<string | null>(null);
+   const [selectedPet, setSelectedPet] = useState<string | null>(null);
   const [petName, setPetName] = useState<string>('');
   const [showHome, setShowHome] = useState<boolean>(false);
 
@@ -20,17 +20,17 @@ export default function VirtualPetDashboard() {
   if (selectedPet) {
     // Pet naming screen
     return (
-      <div className="background">
-        <p className="titles">Welcome to virtual pet game!</p>
-        <p style={{ color: 'white' }} className='text-2xl'>Name your {selectedPet}</p>
+      <div className='background'>
+        <p className='titles'>Welcome to virtual pet game!</p>
+        <p style={{ color: 'white' }}>Name your {selectedPet}</p>
         <input
-          type="text"
-          placeholder="Enter pet name..."
+          type='text'
+          placeholder='Enter pet name...'
           value={petName}
           onChange={(e) => setPetName(e.target.value)}
-          className=" outline-none border-b-[2px] border-b-white placeholder:tracking-widest tracking-widest placeholder:font-[600] "
+          className='input-name'
         />
-        <button className="button-choose font-bold tracking-wider" onClick={handleConfirmName}>
+        <button className='button-choose' onClick={handleConfirmName}>
           Confirm
         </button>
       </div>
@@ -42,7 +42,6 @@ export default function VirtualPetDashboard() {
     <div className='background'>
       <p className='titles'>Welcome to virtual pet game!</p>
       <p style={{ color: 'white' }}>Choose a pet</p>
-
 
       <div className='choose-pet'>
         {[1, 2, 3, 4].map((_, index) => (
