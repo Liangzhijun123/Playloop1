@@ -8,6 +8,8 @@ interface HomeProps {
 
 export default function Home({ petName, petType }: HomeProps) {
   const [showHungerModal, setShowHungerModal] = React.useState(false);
+  // Track active state for each feed button
+  const [activeFeedIndex, setActiveFeedIndex] = React.useState<number | null>(null);
 
   const handleHungerClick = () => {
     setShowHungerModal(true);
@@ -16,6 +18,10 @@ export default function Home({ petName, petType }: HomeProps) {
   const closeModal = () => {
     setShowHungerModal(false);
   };
+  const handleFeedClick = (idx: number) => {
+    setActiveFeedIndex(idx);
+  };
+
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
@@ -152,6 +158,27 @@ export default function Home({ petName, petType }: HomeProps) {
                 <button onClick={closeModal} className="cancel-button">
                   <img src="/cancel.png" style={{ width: '9px', height: '8px' }} />
                 </button>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'auto auto auto', gap: '15px' }}>
+                {[...Array(6)].map((_, idx) => (
+                  <div
+                    key={idx}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: '16px',
+                    }}
+                  >
+                    <img src="/burger.png" className='burger'></img>
+                    <button
+                      className={`feed-button${activeFeedIndex === idx ? ' active' : ''}`}
+                      onClick={() => handleFeedClick(idx)}
+                    >
+                      Feed
+                    </button>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
