@@ -11,13 +11,12 @@ p {
   align-items: center;
   display: flex;
   justify-content: center;
-  height: 100vh;
   flex-direction: column;
-  gap: 40px;
+  gap: 32px;
 }
 
 .titles {
-  font-size: 30px;
+  font-size: 48px;
   background: linear-gradient(90deg, #8a48d1, #cf0cd1);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -36,7 +35,7 @@ p {
 }
 
 .button-choose {
-  border-width: 2px;
+  border-width: 1px;
   border-style: solid;
   border-color: #ffffff;
   border-radius: 10px;
@@ -51,28 +50,28 @@ p {
 }
 
 .input-name {
-  background: transparent;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: #ffffff;
+  background-color: transparent;
   color: white;
-  outline: none;
-  border: none;
-  border-bottom: 1px solid white;
-  padding: 10px;
+  padding-bottom: 10px;
 }
-.input-name::placeholder {
-  color: gray;
-  size: 16px;
-  font-weight: 600;
-}
+
 /* home */
 .profile {
   border-width: 1px;
   border-style: solid;
   border-color: #ffffff;
   border-radius: 10px;
-  background: linear-gradient(180deg, #d987f29a, #ef65ca70);
-
- 
-
+  width: 357px;
+  height: 72px;
+  background-color: linear-gradient(180deg, #d987f29a, #ef65ca70);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
 }
 
 .home-bar {
@@ -94,52 +93,47 @@ p {
   justify-content: center;
   position: relative;
 }
-.home-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: #100c29;
+
+.smile-button {
+  border: 1px solid white;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 100px;
+  justify-content: center;
+  align-items: center;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
-.bottom-nav {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  padding: 12px 0;
+/* food inventory */
+
+.modal-overlay {
   position: fixed;
   bottom: 0;
   left: 0;
-  right: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.nav-item {
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  color: white;
-  font-size: 12px;
-  gap: 4px;
+  z-index: 1000;
+  padding: 10px;
+}
+
+.modal-content {
+  background: #fdf2f8;
+  width: 100%;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.cancel-button {
+
+  
+  background: transparent;
+  border: none;
   cursor: pointer;
-  transition: all 0.2s;
-  padding: 8px;
-  border-radius: 8px;
-}
-
-.nav-item:hover {
-  opacity: 0.8;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.nav-item.active {
-  background: rgba(138, 72, 209, 0.3);
-  color: #8a48d1;
-}
-
-.nav-icon {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
+  border: none;
 }

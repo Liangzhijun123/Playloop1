@@ -1,69 +1,50 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './VirtualPet.css';
-import Shop from './Shop';
 
 interface HomeProps {
   petName: string;
   petType: string;
 }
 
-type ActiveView = 'home' | 'shop' | 'story' | 'chat';
-
 export default function Home({ petName, petType }: HomeProps) {
-  const [activeView, setActiveView] = useState<ActiveView>('home');
+  const [showHungerModal, setShowHungerModal] = React.useState(false);
 
-  // Render different views based on activeView
-  const renderContent = () => {
-    switch (activeView) {
-      case 'shop':
-        return <Shop />;
-      case 'story':
-        return <div style={{ color: 'white', padding: '20px' }}>Story content coming soon...</div>;
-      case 'chat':
-        return <div style={{ color: 'white', padding: '20px' }}>Chat content coming soon...</div>;
-      default:
-        return (
-          <>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginTop: '32px',
-              }}
-            >
-              <div>
-                <p style={{ color: 'white' }}>Health bar</p>
-              </div>
-            </div>
-          </>
-        );
-    }
+  const handleHungerClick = () => {
+    setShowHungerModal(true);
   };
 
+  const closeModal = () => {
+    setShowHungerModal(false);
+  };
   return (
-    <div className="home-container">
+    <>
       <div style={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
-        <div className="flex w-full flex-col mx-10 my-5 gap-4 profile p-2">
-          <div className="px-2 flex w-full justify-between">
-            <div className=" flex w-auto gap-2">
+        <div className="profile">
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: '200px',
+              justifyContent: 'space-between',
+            }}
+          >
+            <div
+              style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}
+            >
               <p>{petName}</p>
-              <p className="text-nowrap">Lv: 14</p>
+              <p>Lv: 14</p>
             </div>
-            <div className=" flex w-auto gap-2">
+            <div
+              style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}
+            >
               <img src="/cash.png" style={{ width: '24px', height: '18px' }} />
               <p>$1000</p>
             </div>
           </div>
 
           <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: '100%',
-            }}
+            style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '100px' }}
           >
             <div
               style={{
@@ -137,9 +118,45 @@ export default function Home({ petName, petType }: HomeProps) {
         </div>
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
-        <button></button>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignContent: 'center',
+          gap: '16px',
+        }}
+      >
+        <button className="smile-button">
+          <img src="/smile.png" style={{ width: '41px', height: '50px' }} />
+        </button>
+        <button className="smile-button" onClick={handleHungerClick}>
+          <img src="/hunger.png" style={{ width: '41px', height: '50px' }} />
+        </button>
+        <button className="smile-button">
+          <img src="/night.png" style={{ width: '41px', height: '50px' }} />
+        </button>
+        <button className="smile-button">
+          <img src="/shower.png" style={{ width: '41px', height: '50px' }} />
+        </button>
       </div>
-    </div>
+
+      {showHungerModal && (
+        <>
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <div
+                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
+              >
+                <p style={{ color: 'black' }}>Food Inventory</p>
+                <button onClick={closeModal} className="cancel-button">
+                  <img src="/cancel.png" style={{ width: '9px', height: '8px' }} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+    </>
   );
 }

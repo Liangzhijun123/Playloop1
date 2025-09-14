@@ -1,6 +1,6 @@
 {
   "$schema": "https://developers.reddit.com/schema/config-file.v1.json",
-  "name": "teakmirror",
+  "name": "playloop",
   "post": {
     "dir": "dist/client",
     "entrypoints": {
@@ -9,6 +9,7 @@
       }
     }
   },
+ 
   "server": {
     "dir": "dist/server",
     "entry": "index.cjs"
@@ -18,7 +19,7 @@
     "items": [
       {
         "label": "Create a new post",
-        "description": "teakmirror",
+        "description": "playloop",
         "location": "subreddit",
         "forUserType": "moderator",
         "endpoint": "/internal/menu/post-create"
@@ -29,6 +30,6 @@
     "onAppInstall": "/internal/on-app-install"
   },
   "dev": {
-    "subreddit": "teakmirror_dev"
+    "subreddit": "playloop_dev"
   }
 }
